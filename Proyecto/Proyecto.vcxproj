@@ -120,21 +120,29 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\dareb\Downloads\include\include\conector\include;C:\Users\dareb\Downloads\include\include\conector\lib64;C:\Users\dareb\Downloads\include\include\server\include;C:\Users\dareb\Downloads\include\include\server\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>C:\Users\dareb\Downloads\include\include\mysqlcppconn.lib;C:\Users\dareb\Downloads\include\include\libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Conexion.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ordenar.cpp" />
     <ClCompile Include="tabla.cpp" />
+    <ClCompile Include="trading.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Conexion.h" />
+    <ClInclude Include="ordenar.h" />
     <ClInclude Include="tabla.h" />
     <ClInclude Include="tabulate.hpp" />
+    <ClInclude Include="trading.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

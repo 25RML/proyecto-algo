@@ -1,18 +1,43 @@
 #include <iostream>
 #include "tabla.h"
 #include <iostream>
-
+#include "Conexion.h"
+#include "ordenar.h" // Menu Ordenar
+#include "trading.h" // Funciones Fran
 int main()
 {
-	// Mostrar Movimientos Diarios en Forma de Menu
-	std::cout << "\tMOVIMIENTOS DIARIOS\n";
-	mostrarEmpresasEnTabla(12);
+	{
+		int salir{ menuPrincipal() };
+		if (salir == 0) return 0;
+		std::cout << "\033[2J\033[1;1H";
+	}
+	
+
+	//verificar conexion a la db
+	abrir_conexion();	
+	cerrar_conexion();
+
+	insertar_apertura(3, 25);
+
+	// Inicializar un vector Db_tabla (temporal o no, nose)
+	std::vector<Db_tabla> _tablaEmpresas;
+	obtener_valores(_tablaEmpresas);
 
 	char comandoMovDiarios{};
+
+	// Mostrar Movimientos Diarios en Forma de Menu
+	std::cout << "\tMOVIMIENTOS DIARIOS\n";
+
+	imprimirTablaEnMenu(_tablaEmpresas); // test
+	//mostrarEmpresasEnTabla(12); // Original
+
+	//obtener_valores();
+	
 	menuOperaciones();
-	// Nombres[10]
-	// Costos
-	// P Compra
+
+	
+
+
 
 	do
 	{
@@ -32,6 +57,10 @@ int main()
 			break;
 		case '4':
 			menuMiPortafolio();
+			break;
+		case '5':
+			
+			menuOrdenar();
 			break;
 		case '6':
 			return 0;

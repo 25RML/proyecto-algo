@@ -2,6 +2,7 @@
 #include "tabla.h"
 #include <iostream>
 #include <conio.h>
+#include "Conexion.h"
 
 using namespace tabulate;
 
@@ -9,7 +10,6 @@ void mostrarEmpresasEnTabla(int filas)
 {
 
 	Table listaEmpresas;
-
 	listaEmpresas.add_row({ "ID", "Empresa","Apertura","Ultima","Var%","Compra","Venta","Monto","Cant. Neg.","#N Op." });
 	listaEmpresas[0].format()
 		.font_color(Color::blue)
@@ -17,18 +17,33 @@ void mostrarEmpresasEnTabla(int filas)
 		.font_align(FontAlign::center)
 		.border_top("=")
 		.font_style({ FontStyle::bold });
+	
+	vector<Db_tabla> resultado;
 
-	for (int i{ 0 }; i < filas; ++i)
+	obtener_valores(resultado);
+
+	for (int i{0}; i < filas; ++i)
 	{
-		listaEmpresas.add_row(RowStream{} << i + 1 << "Empresa" << 1 << 1 << 1 << 1 << 1 << 1 << 2 << 10);
+		listaEmpresas.add_row(RowStream{}
+			<<resultado[i].id
+			<<resultado[i].nombre
+			<<resultado[i].apertura
+			<<resultado[i].ultima
+			<<resultado[i].var
+			<<resultado[i].compra
+			<<resultado[i].venta
+			<<resultado[i].monto
+			<<resultado[i].cantidad
+			<<resultado[i].operaciones
+		);
 	}
-
+	
 	listaEmpresas[1].format()
 		.border_top("=");
 
 	listaEmpresas.column(0).format()
 		.font_style({FontStyle::bold})
-		.font_color(Color::yellow)
+		.font_color(Color::red)
 		.width(4)
 		.font_align(FontAlign::center);
 
@@ -165,6 +180,72 @@ void menuMiPortafolio()
 
 	std::cout << "\tMOVIMIENTOS DIARIOS\n";
 	mostrarEmpresasEnTabla(10);
+
+	menuOperaciones();
+}
+
+
+
+// Cleanup y funcion para Imprimir usando el struct como parametro
+
+void imprimirTablaEnMenu(std::vector<Db_tabla> listaEmpresa)
+{
+	using namespace tabulate;
+
+	Table listaEmpresas;
+	listaEmpresas.add_row({ "ID", "Empresa","Apertura","Ultima","Var%","Compra","Venta","Monto","Cant. Neg.","#N Op." });
+	listaEmpresas[0].format()
+		.font_color(Color::blue)
+		.width(20)
+		.font_align(FontAlign::center)
+		.border_top("=")
+		.font_style({ FontStyle::bold });
+
+	for (int i{ 0 }; i < listaEmpresa.size(); ++i)
+	{
+		listaEmpresas.add_row(RowStream{}
+			<< listaEmpresa[i].id
+			<< listaEmpresa[i].nombre
+			<< listaEmpresa[i].apertura
+			<< listaEmpresa[i].ultima
+			<< listaEmpresa[i].var
+			<< listaEmpresa[i].compra
+			<< listaEmpresa[i].venta
+			<< listaEmpresa[i].monto
+			<< listaEmpresa[i].cantidad
+			<< listaEmpresa[i].operaciones
+		);
+	}
+
+	listaEmpresas[1].format()
+		.border_top("=");
+
+	listaEmpresas.column(0).format()
+		.font_style({ FontStyle::bold })
+		.font_color(Color::red)
+		.width(4)
+		.font_align(FontAlign::center);
+
+	for (int i{ 1 }; i <= 9; ++i)
+	{
+		listaEmpresas.column(i).format()
+			.width(12)
+			.border_left("");
+	}
+
+	listaEmpresas.column(1).format()
+		.width(30);
+
+	std::cout << listaEmpresas << '\n';
+
+}
+
+void cleanupAndPrint(std::vector<Db_tabla> listaImprimir)
+{
+	std::cout << "\033[2J\033[1;1H";
+
+	std::cout << "\tMOVIMIENTOS DIARIOS\n";
+	imprimirTablaEnMenu(listaImprimir);
 
 	menuOperaciones();
 }
